@@ -12,6 +12,7 @@ Featured:
 - CHT nozzle by Bondtech
 - BLTouch as Z probe
 - Airflow control by Noctua
+- WobbleX (https://github.com/MirageC79/Interfaces-for-WobbleX-integration?tab=GPL-3.0-1-ov-file)
 
 Features:
 

@@ -29,11 +29,11 @@ M569 P0.1 S0                                 ; physical drive 0.1 goes forwards
 M569 P0.2 S0								 ; physical drive 0.2 goes forwards
 M569 P0.3 S1                                 ; physical drive 0.3 goes backwards SINISTRA Z
 M569 P0.4 S1 								 ; physical drive 0.4 goes backwards DESTRA Z
-M569 P0.5 S1 								 ; physical drive 0.5 goes forwards DIETRO Z
+M569 P0.5 S1 								 ; physical drive 0.5 goes backwards DIETRO Z
 M584 X0.1 Y0.0 Z0.3:0.4:0.5 E0.2             ; set drive mapping // Z-> FRONTESINISTRA:FRONTEDESTRA:DIETRO
-M671 X-5.25:409.25:202 Y405.5:405.5:-9 S6 P2			 ; Front Left: (0, 400) | Front Right: (400, 400) | Back: (177, -9)
+M671 X-5.25:409.25:202 Y405.5:405.5:-9 S6 P4 ; Front Left: (-5.25, 405.5) | Front Right: (409.25, 405.5) | Back: (202, -9)
 M350 X16 Y16 Z16 E16 I1                      ; configure microstepping with interpolation
-M92 X80.00 Y80.00 Z1600.00 E415.00           ; set steps per mm
+M92 X80.00 Y80.00 Z800.00 E415.00           ; set steps per mm
 M566 X900.00 Y900.00 Z60.00 E120.00          ; set maximum instantaneous speed changes (mm/min)
 M203 X10000.00 Y10000.00 Z180.00 E1200.00    ; set maximum speeds (mm/min)
 M201 X5000.00 Y5000.00 Z100.00 E250.00       ; set accelerations (mm/s^2)
@@ -49,9 +49,9 @@ M574 Y1 S1 P"io1.in"
 
 ; Z-Probe
 M950 S20 C"io4.out" 					     ; Duet 3 MB6HC
-M558 P9 C"io4.in" H5 F120 T6000  			 ; enable Z probe but set dive height, probe speed and travel speed
+M558 P9 C"io4.in" H5 F120 T5000  			 ; enable Z probe but set dive height, probe speed and travel speed
 G31 X0 Y0 Z2.1 P25							 ; set up the probe offsets, trigger height and trigger value in G31: Y35
-M557 X0:400 Y0:360 S20                     ; define mesh grid
+M557 X0:400 Y0:360 P3:3			             ; define mesh grid
 
 ; Heaters
 M308 S0 P"temp0" Y"thermistor" T100000 B4138 ; configure sensor 0 as thermistor on pin temp0
@@ -74,11 +74,13 @@ M950 F1 C"out7" Q250                         ; create fan 1 on pin out6 and set 
 M106 P1 S1 H1:2 T45                          ; set fan 1 value. Thermostatic control is turned on
 
 ; Controller fan
-M308 S10 Y"mcu-temp" A"MCU"                  ; defines sensor 10 as MCU temperature sensor
+M308 S10 Y"mcu_temp" A"MCU"                  ; defines sensor 10 as MCU temperature sensor
 M950 F5 C"!out5+out5.tach" 					 ; fan 5 uses out5, but we are using a PWM fan so the output needs to be inverted, and using out5.tach as a tacho input
 M106 P5 S1.0 H10 L0.3 X1 T40:70 C"MCU_Fan" 			 ; C"MCU_Fan" 
-M950 F6 C"!out6+out6.tach" 					 ; fan 6 uses out6, but we are using a PWM fan so the output needs to be inverted, and using out5.tach as a tacho input
+M950 F6 C"!out6+out6.tach" 					 ; fan 6 uses out6, but we are using a PWM fan so the output needs to be inverted, and using out6.tach as a tacho input
 M106 P6 S1.0 H10 L0.3 X1 T50:70 C"Exhaust_Fan" 			 ; C"MCU_Fan" 
+M950 F4 C"!out4+out4.tach" 					 ; fan 4 uses out4, but we are using a PWM fan so the output needs to be inverted, and using out4.tach as a tacho input
+M106 P4 S0 L0 X1 C"cooling_part_fans" 
 
 ; Tools
 M563 P0 D0 H1:2 F0                                    ; define tool 0
