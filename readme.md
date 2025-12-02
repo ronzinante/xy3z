@@ -2,7 +2,7 @@
 
 3D printer based on Toolchanger.
 
-![xy3z](xy3z.png)
+![xy3z](./img/xy3z.png)
 
 Featured:
 
@@ -16,6 +16,7 @@ Featured:
 
 Features:
 
+- RepraRepRapFirmware (https://configtool.reprapfirmware.org/)
 - CoreXY
 - Kinematic bed
 - 3 indipendet motor for Z axis
